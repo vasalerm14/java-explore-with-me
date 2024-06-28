@@ -3,8 +3,10 @@ package ru.practicum.ewm.stats.client;
 import org.apache.http.client.HttpClient;
 import org.apache.http.impl.client.HttpClientBuilder;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
+import org.springframework.stereotype.Component;
 import org.springframework.web.client.HttpStatusCodeException;
 import org.springframework.web.client.RestTemplate;
 import ru.practicum.ewm.stats.dto.EndpointHitDto;
@@ -13,12 +15,13 @@ import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
+@Component
 public class StatsClient {
     @Value("${client.url}")
     private String serverUrl;
     private final RestTemplate rest;
 
+    @Autowired
     public StatsClient() {
         this.rest = new RestTemplate();
         HttpClient httpClient = HttpClientBuilder.create().build();
