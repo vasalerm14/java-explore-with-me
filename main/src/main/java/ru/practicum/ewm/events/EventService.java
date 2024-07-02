@@ -334,9 +334,9 @@ public class EventService implements EventServiceInt {
                         confirmedRequests.getOrDefault(event.getId(), 0L)));
             }
         }
-        statsClient.saveHit(hit);
         EndpointHitDto hit = new EndpointHitDto(app, request.getRequestURI(), request.getRemoteAddr(),
                 LocalDateTime.now());
+        statsClient.saveHit(hit);
         return result;
     }
 
