@@ -14,7 +14,7 @@ import java.util.stream.Collectors;
 @Service
 @RequiredArgsConstructor
 @Transactional
-public class CategoryService {
+public class CategoryService implements CategoryServiceInt {
     private final CategoryRepository categoryRepository;
 
     public CategoryDto addCategory(NewCategoryDto newCategoryDto) {
