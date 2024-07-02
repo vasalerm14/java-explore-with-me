@@ -15,7 +15,7 @@ import java.util.stream.Collectors;
 @Transactional
 @Service
 @RequiredArgsConstructor
-public class UserService implements UserServiceInt{
+public class UserService implements UserServiceInt {
     private final UserRepository userRepository;
 
     public UserDto addUser(NewUserRequest newUserRequest) {

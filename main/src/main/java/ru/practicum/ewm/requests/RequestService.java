@@ -27,7 +27,7 @@ import static ru.practicum.ewm.requests.model.RequestStatus.*;
 @Service
 @RequiredArgsConstructor
 @Transactional
-public class RequestService implements RequestServiceInt{
+public class RequestService implements RequestServiceInt {
     private final RequestRepository requestRepository;
     private final EventRepository eventRepository;
     private final UserRepository userRepository;

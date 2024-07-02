@@ -26,7 +26,7 @@ import static ru.practicum.ewm.requests.model.RequestStatus.CONFIRMED;
 @Service
 @RequiredArgsConstructor
 @Transactional
-public class CompilationService implements CompilationServiceInt{
+public class CompilationService implements CompilationServiceInt {
     private final CompilationRepository compilationRepository;
     private final EventRepository eventRepository;
     private final RequestRepository requestRepository;
