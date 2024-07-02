@@ -10,8 +10,6 @@ import ru.practicum.ewm.events.dto.EventSearchCriteria;
 import ru.practicum.ewm.events.dto.UpdateEventAdminRequest;
 
 import javax.validation.Valid;
-import javax.validation.constraints.Positive;
-import javax.validation.constraints.PositiveOrZero;
 import java.util.List;
 
 @Validated
