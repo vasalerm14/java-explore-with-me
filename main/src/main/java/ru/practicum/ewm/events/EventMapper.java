@@ -28,7 +28,7 @@ public class EventMapper {
                 .build();
     }
 
-    public Event toEvent2(NewEventDto newEventDto, User user, Category category, Location location){
+    public Event toEvent2(NewEventDto newEventDto, User user, Category category, Location location) {
         return Event.builder()
                 .initiator(user)
                 .category(category)
