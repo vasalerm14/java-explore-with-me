@@ -1,6 +1,8 @@
 package ru.practicum.ewm.requests;
 
+import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
+import lombok.experimental.FieldDefaults;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.practicum.ewm.events.EventRepository;
@@ -27,6 +29,7 @@ import static ru.practicum.ewm.requests.model.RequestStatus.*;
 @Service
 @RequiredArgsConstructor
 @Transactional
+@FieldDefaults(level = AccessLevel.PRIVATE)
 public class RequestService implements RequestServiceInt {
     private final RequestRepository requestRepository;
     private final EventRepository eventRepository;

@@ -1,6 +1,8 @@
 package ru.practicum.ewm.compilations;
 
+import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
+import lombok.experimental.FieldDefaults;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -26,6 +28,7 @@ import static ru.practicum.ewm.requests.model.RequestStatus.CONFIRMED;
 @Service
 @RequiredArgsConstructor
 @Transactional
+@FieldDefaults(level = AccessLevel.PRIVATE)
 public class CompilationService implements CompilationServiceInt {
     private final CompilationRepository compilationRepository;
     private final EventRepository eventRepository;
