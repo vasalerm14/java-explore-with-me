@@ -135,6 +135,7 @@ public class CompilationService {
         return compilationDto;
     }
 
+    @Transactional
     public void deleteCompilation(Long compilationId) {
         getCompilation(compilationId);
         compilationRepository.deleteById(compilationId);
