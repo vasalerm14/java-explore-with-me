@@ -36,12 +36,12 @@ public class RequestService implements RequestServiceInt {
     private final UserRepository userRepository;
 
     public ParticipationRequestDto addRequest(Long userId, Long eventId) {
-        Event event = eventRepository.findById(eventId)
-                .orElseThrow(() -> new NotFoundException("Event with id=" + eventId + " was not found"));
-        User user = getUser(userId);
         if (requestRepository.existsByRequesterIdAndEventId(userId, eventId)) {
             throw new ForbiddenException("Request is already exist.");
         }
+        Event event = eventRepository.findById(eventId)
+                .orElseThrow(() -> new NotFoundException("Event with id=" + eventId + " was not found"));
+        User user = getUser(userId);
         if (userId.equals(event.getInitiator().getId())) {
             throw new ForbiddenException("Initiator can't send request to his own event.");
         }
@@ -67,12 +67,9 @@ public class RequestService implements RequestServiceInt {
 
     public EventRequestStatusUpdateResult updateRequestsStatus(Long userId, Long eventId,
                                                                EventRequestStatusUpdateRequest statusUpdateRequest) {
-        User initiator = getUser(userId);
         Event event = eventRepository.findByIdAndInitiatorId(eventId, userId).orElseThrow(() ->
                 new NotFoundException("Event with id=" + eventId + " was not found."));
-        if (!event.getInitiator().equals(initiator)) {
-            throw new ValidationException("User isn't initiator.");
-        }
+
         long confirmedRequests = requestRepository.countByEventIdAndStatus(eventId, CONFIRMED);
         if (event.getParticipantLimit() > 0 && event.getParticipantLimit() <= confirmedRequests) {
             throw new ForbiddenException("The participant limit has been reached.");
