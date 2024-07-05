@@ -74,7 +74,7 @@ public class EventService implements EventServiceInt {
         Category category = categoryRepository.findById(catId).orElseThrow(() ->
                 new NotFoundException("Category with id=" + catId + " was not found"));
         Location location = checkLocation(LocationMapper.toLocation(newEventDto.getLocation()));
-        Event event = EventMapper.toEvent2(newEventDto,user,category,location);
+        Event event = EventMapper.toEvent(newEventDto,user,category,location);
         return EventMapper.toEventFullDto(eventRepository.save(event), 0L);
     }
 

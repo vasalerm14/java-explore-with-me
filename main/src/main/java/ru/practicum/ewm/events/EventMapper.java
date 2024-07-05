@@ -15,20 +15,7 @@ import java.time.LocalDateTime;
 
 @UtilityClass
 public class EventMapper {
-    public Event toEvent(NewEventDto newEventDto) {
-        return Event.builder()
-                .annotation(newEventDto.getAnnotation())
-                .description(newEventDto.getDescription())
-                .eventDate(newEventDto.getEventDate())
-                .location(LocationMapper.toLocation(newEventDto.getLocation()))
-                .paid(newEventDto.getPaid())
-                .participantLimit(newEventDto.getParticipantLimit())
-                .requestModeration(newEventDto.getRequestModeration())
-                .title(newEventDto.getTitle())
-                .build();
-    }
-
-    public Event toEvent2(NewEventDto newEventDto, User user, Category category, Location location) {
+    public Event toEvent(NewEventDto newEventDto, User user, Category category, Location location) {
         return Event.builder()
                 .initiator(user)
                 .category(category)
