@@ -74,15 +74,11 @@ public class EventService implements EventServiceInt {
         Category category = categoryRepository.findById(catId).orElseThrow(() ->
                 new NotFoundException("Category with id=" + catId + " was not found"));
         Location location = checkLocation(LocationMapper.toLocation(newEventDto.getLocation()));
-        Event event = EventMapper.toEvent(newEventDto,user,category,location);
+        Event event = EventMapper.toEvent(newEventDto, user, category, location);
         return EventMapper.toEventFullDto(eventRepository.save(event), 0L);
     }
 
-    public EventFullDto updateEventByOwner(Long userId, Long eventId, UpdateEventUserRequest updateEvent) {
-        Event event = getEvent(eventId, userId);
-        if (event.getState() == PUBLISHED) {
-            throw new ForbiddenException("Published events can't be update");
-        }
+    private void updateEventFields(Event event, UpdateEventRequest updateEvent) {
         String annotation = updateEvent.getAnnotation();
         if (annotation != null && !annotation.isBlank()) {
             event.setAnnotation(annotation);
@@ -116,6 +112,16 @@ public class EventService implements EventServiceInt {
         if (title != null && !title.isBlank()) {
             event.setTitle(title);
         }
+    }
+
+    public EventFullDto updateEventByOwner(Long userId, Long eventId, UpdateEventUserRequest updateEvent) {
+        Event event = getEvent(eventId, userId);
+        if (event.getState() == PUBLISHED) {
+            throw new ForbiddenException("Published events can't be updated");
+        }
+
+        updateEventFields(event, updateEvent);
+
         if (updateEvent.getStateAction() != null) {
             StateActionPrivate stateActionPrivate = StateActionPrivate.valueOf(updateEvent.getStateAction());
             if (stateActionPrivate.equals(SEND_TO_REVIEW)) {
@@ -124,6 +130,7 @@ public class EventService implements EventServiceInt {
                 event.setState(State.CANCELED);
             }
         }
+
         return EventMapper.toEventFullDto(eventRepository.save(event),
                 requestRepository.countByEventIdAndStatus(eventId, CONFIRMED));
     }
@@ -145,41 +152,13 @@ public class EventService implements EventServiceInt {
                 event.setState(State.CANCELED);
             }
         }
-        String annotation = updateEvent.getAnnotation();
-        if (annotation != null && !annotation.isBlank()) {
-            event.setAnnotation(annotation);
-        }
-        if (updateEvent.getCategory() != null) {
-            event.setCategory(CategoryMapper.toCategory(categoryService.getCategoryById(updateEvent.getCategory())));
-        }
-        String description = updateEvent.getDescription();
-        if (description != null && !description.isBlank()) {
-            event.setDescription(description);
-        }
-        LocalDateTime eventDate = updateEvent.getEventDate();
-        if (eventDate != null) {
-            checkActualTime(eventDate);
-            event.setEventDate(eventDate);
-        }
-        if (updateEvent.getLocation() != null) {
-            event.setLocation(checkLocation(LocationMapper.toLocation(updateEvent.getLocation())));
-        }
-        if (updateEvent.getPaid() != null) {
-            event.setPaid(updateEvent.getPaid());
-        }
-        if (updateEvent.getParticipantLimit() != null) {
-            event.setParticipantLimit(updateEvent.getParticipantLimit());
-        }
-        if (updateEvent.getRequestModeration() != null) {
-            event.setRequestModeration(updateEvent.getRequestModeration());
-        }
-        String title = updateEvent.getTitle();
-        if (title != null && !title.isBlank()) {
-            event.setTitle(title);
-        }
+
+        updateEventFields(event, updateEvent);
+
         return EventMapper.toEventFullDto(eventRepository.save(event),
                 requestRepository.countByEventIdAndStatus(eventId, CONFIRMED));
     }
+
 
     @Transactional(readOnly = true)
     public List<EventShortDto> getEventsByOwner(Long userId, Integer from, Integer size) {

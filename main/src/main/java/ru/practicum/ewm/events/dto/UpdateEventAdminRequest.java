@@ -16,7 +16,7 @@ import static ru.practicum.ewm.util.DateConstant.DATE_TIME_PATTERN;
 @AllArgsConstructor
 @NoArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class UpdateEventAdminRequest {
+public class UpdateEventAdminRequest implements UpdateEventRequest {
 
     @Size(min = 20, max = 2000)
     String annotation;
