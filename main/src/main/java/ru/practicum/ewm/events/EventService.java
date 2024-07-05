@@ -259,6 +259,9 @@ public class EventService implements EventServiceInt {
     public List<EventShortDtoWithViews> getEvents(String text, List<Long> categories, Boolean paid, LocalDateTime rangeStart,
                                                   LocalDateTime rangeEnd, Boolean onlyAvailable, String sort, Integer from,
                                                   Integer size, HttpServletRequest request) {
+        EndpointHitDto hit = new EndpointHitDto(app, request.getRequestURI(), request.getRemoteAddr(),
+                LocalDateTime.now());
+        statsClient.saveHit(hit);
         if (rangeStart != null && rangeEnd != null && rangeStart.isAfter(rangeEnd)) {
             throw new ValidationException("START can't ba after END.");
         }
@@ -329,9 +332,6 @@ public class EventService implements EventServiceInt {
                         confirmedRequests.getOrDefault(event.getId(), 0L)));
             }
         }
-        EndpointHitDto hit = new EndpointHitDto(app, request.getRequestURI(), request.getRemoteAddr(),
-                LocalDateTime.now());
-        statsClient.saveHit(hit);
         return result;
     }
 
