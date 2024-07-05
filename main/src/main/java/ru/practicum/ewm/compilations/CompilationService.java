@@ -85,7 +85,7 @@ public class CompilationService implements CompilationServiceInt {
     @Transactional(readOnly = true)
     public List<CompilationDto> getCompilations(Boolean pinned, Integer from, Integer size) {
         Pageable pageable = PageRequest.of(from / size, size);
-        List<Compilation> compilations = getCompilationsPinned(pinned,from,size);
+        List<Compilation> compilations = getCompilationsPinned(pinned, from, size);
         List<CompilationDto> result = new ArrayList<>();
         for (Compilation compilation : compilations) {
             CompilationDto compilationDto = CompilationMapper.toCompilationDto(compilation);
@@ -103,12 +103,11 @@ public class CompilationService implements CompilationServiceInt {
         return result;
 
 
-
     }
 
-    private List<Compilation> getCompilationsPinned(Boolean pinned, Integer from, Integer size){
+    private List<Compilation> getCompilationsPinned(Boolean pinned, Integer from, Integer size) {
         Pageable pageable = PageRequest.of(from / size, size);
-        if(pinned){
+        if (pinned) {
             return compilationRepository.findAllByPinned(pinned, pageable);
         }
         return compilationRepository.findAll(pageable).getContent();
