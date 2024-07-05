@@ -40,7 +40,8 @@ public class RequestService implements RequestServiceInt {
         }
         Event event = eventRepository.findById(eventId)
                 .orElseThrow(() -> new NotFoundException("Event with id=" + eventId + " was not found"));
-        User user = getUser(userId);
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new NotFoundException("User with id=" + userId + " was not found"));
         if (userId.equals(event.getInitiator().getId())) {
             throw new ForbiddenException("Initiator can't send request to his own event.");
         }
