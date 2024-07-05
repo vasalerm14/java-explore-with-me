@@ -85,41 +85,33 @@ public class CompilationService implements CompilationServiceInt {
     @Transactional(readOnly = true)
     public List<CompilationDto> getCompilations(Boolean pinned, Integer from, Integer size) {
         Pageable pageable = PageRequest.of(from / size, size);
-        if (pinned != null) {
-            List<Compilation> compilations = compilationRepository.findAllByPinned(pinned, pageable);
-            List<CompilationDto> result = new ArrayList<>();
-            for (Compilation compilation : compilations) {
-                CompilationDto compilationDto = CompilationMapper.toCompilationDto(compilation);
-                if (compilation.getEvents() != null) {
-                    List<Long> ids = compilation.getEvents().stream().map(Event::getId).collect(Collectors.toList());
-                    Map<Long, Long> confirmedRequests = requestRepository.findAllByEventIdInAndStatus(ids, CONFIRMED)
-                            .stream()
-                            .collect(Collectors.toMap(ConfirmedRequests::getEvent, ConfirmedRequests::getCount));
-                    compilationDto.setEvents(compilation.getEvents().stream()
-                            .map(event -> EventMapper.toEventShortDto(event, confirmedRequests.get(event.getId())))
-                            .collect(Collectors.toList()));
-                }
-                result.add(compilationDto);
+        List<Compilation> compilations = getCompilationsPinned(pinned,from,size);
+        List<CompilationDto> result = new ArrayList<>();
+        for (Compilation compilation : compilations) {
+            CompilationDto compilationDto = CompilationMapper.toCompilationDto(compilation);
+            if (compilation.getEvents() != null) {
+                List<Long> ids = compilation.getEvents().stream().map(Event::getId).collect(Collectors.toList());
+                Map<Long, Long> confirmedRequests = requestRepository.findAllByEventIdInAndStatus(ids, CONFIRMED)
+                        .stream()
+                        .collect(Collectors.toMap(ConfirmedRequests::getEvent, ConfirmedRequests::getCount));
+                compilationDto.setEvents(compilation.getEvents().stream()
+                        .map(event -> EventMapper.toEventShortDto(event, confirmedRequests.get(event.getId())))
+                        .collect(Collectors.toList()));
             }
-            return result;
-        } else {
-            List<Compilation> compilations = compilationRepository.findAll(pageable).getContent();
-            List<CompilationDto> result = new ArrayList<>();
-            for (Compilation compilation : compilations) {
-                CompilationDto compilationDto = CompilationMapper.toCompilationDto(compilation);
-                if (compilation.getEvents() != null) {
-                    List<Long> ids = compilation.getEvents().stream().map(Event::getId).collect(Collectors.toList());
-                    Map<Long, Long> confirmedRequests = requestRepository.findAllByEventIdInAndStatus(ids, CONFIRMED)
-                            .stream()
-                            .collect(Collectors.toMap(ConfirmedRequests::getEvent, ConfirmedRequests::getCount));
-                    compilationDto.setEvents(compilation.getEvents().stream()
-                            .map(event -> EventMapper.toEventShortDto(event, confirmedRequests.get(event.getId())))
-                            .collect(Collectors.toList()));
-                }
-                result.add(compilationDto);
-            }
-            return result;
+            result.add(compilationDto);
         }
+        return result;
+
+
+
+    }
+
+    private List<Compilation> getCompilationsPinned(Boolean pinned, Integer from, Integer size){
+        Pageable pageable = PageRequest.of(from / size, size);
+        if(pinned){
+            return compilationRepository.findAllByPinned(pinned, pageable);
+        }
+        return compilationRepository.findAll(pageable).getContent();
     }
 
     @Transactional(readOnly = true)
