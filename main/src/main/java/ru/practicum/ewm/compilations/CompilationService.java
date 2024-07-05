@@ -107,7 +107,7 @@ public class CompilationService implements CompilationServiceInt {
 
     private List<Compilation> getCompilationsPinned(Boolean pinned, Integer from, Integer size) {
         Pageable pageable = PageRequest.of(from / size, size);
-        if (pinned) {
+        if (pinned != null) {
             return compilationRepository.findAllByPinned(pinned, pageable);
         }
         return compilationRepository.findAll(pageable).getContent();
