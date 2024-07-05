@@ -1,9 +1,6 @@
 package ru.practicum.ewm.events;
 
 import ru.practicum.ewm.events.dto.*;
-import ru.practicum.ewm.exceptions.ForbiddenException;
-import ru.practicum.ewm.exceptions.NotFoundException;
-import ru.practicum.ewm.exceptions.ValidationException;
 
 import javax.servlet.http.HttpServletRequest;
 import java.time.LocalDateTime;
