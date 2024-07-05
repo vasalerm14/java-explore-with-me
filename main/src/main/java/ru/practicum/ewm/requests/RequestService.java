@@ -118,11 +118,6 @@ public class RequestService implements RequestServiceInt {
                 .map(RequestMapper::toParticipationRequestDto).collect(Collectors.toList());
     }
 
-    private User getUser(Long userId) {
-        return userRepository.findById(userId).orElseThrow(() ->
-                new NotFoundException("User with id=" + userId + " was not found"));
-    }
-
     private void checkUser(Long userId) {
         if (!userRepository.existsById(userId)) {
             throw new NotFoundException("User with id=" + userId + " was not found");
