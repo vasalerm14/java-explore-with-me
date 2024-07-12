@@ -113,7 +113,7 @@ public class CommentService {
         commentRepository.deleteById(commentId);
     }
 
-    public void deleteComment(Long commentId) {
+    public void deleteCommentByAdmin(Long commentId) {
         checkAndGetComment(commentId);
         commentRepository.deleteById(commentId);
     }
