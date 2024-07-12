@@ -1,11 +1,59 @@
 {
 	"info": {
-		"_postman_id": "0101af21-cb05-41b9-9041-ab9795e3b518",
+		"_postman_id": "d425b868-8784-49da-8ab3-63dfa8318cee",
 		"name": "Test EWM - Comments",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
-		"_exporter_id": "26701489"
+		"_exporter_id": "30817643"
 	},
 	"item": [
+		{
+			"name": "Добавление пользователя 1",
+			"request": {
+				"method": "GET",
+				"header": []
+			},
+			"response": []
+		},
+		{
+			"name": "Добавление пользователя 2",
+			"request": {
+				"method": "GET",
+				"header": []
+			},
+			"response": []
+		},
+		{
+			"name": "Добавление категории",
+			"request": {
+				"method": "GET",
+				"header": []
+			},
+			"response": []
+		},
+		{
+			"name": "Добавление события 1",
+			"request": {
+				"method": "GET",
+				"header": []
+			},
+			"response": []
+		},
+		{
+			"name": "Добавление события 2",
+			"request": {
+				"method": "GET",
+				"header": []
+			},
+			"response": []
+		},
+		{
+			"name": "Обновление статуса",
+			"request": {
+				"method": "GET",
+				"header": []
+			},
+			"response": []
+		},
 		{
 			"name": "Создание нового комментария",
 			"event": [
